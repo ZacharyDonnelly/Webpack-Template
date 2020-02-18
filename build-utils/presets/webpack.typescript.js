@@ -1,5 +1,5 @@
 const webpackMerge = require("webpack-merge");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { CheckerPlugin } = require("awesome-typescript-loader");
 
 module.exports = env => {
   return webpackMerge(
@@ -7,24 +7,21 @@ module.exports = env => {
     {
       target: "node",
       resolve: {
-        extensions: [".ts", ".tsx", ".wasm", ".mjs", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".mjs", ".js", ".json"]
       },
       module: {
         rules: [
           {
-            test: /\.tsx?/,
+            test: /\.tsx?$/,
             use: [
               {
-                loader: "ts-loader",
-                options: {
-                  transpileOnly: true
-                }
+                loader: "awesome-typescript-loader"
               }
             ]
           }
         ]
       },
-      plugins: [new ForkTsCheckerWebpackPlugin()]
+      plugins: [new CheckerPlugin()]
     },
     // Any mode specific capabilities for that preset
     { production: {}, development: {} }[env.mode]
