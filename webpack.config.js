@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
 const presetConfig = require("./build-utils/loadPresets");
 const { CheckerPlugin } = require("awesome-typescript-loader");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
   return webpackMerge(
@@ -42,17 +43,19 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
         extensions: ["*", ".ts", ".tsx", ".js", ".json", ".jsx"]
       },
       output: {
-        filename: "./bundle.js",
+        filename: "[name].hash.js",
         publicPath: "/",
         chunkFilename: "[name].lazy-chunk.js"
       },
       plugins: [
         new HtmlWebpackPlugin({
-          inject: false,
+          inject: true,
+          title: "Fill me out later",
           template: "./public/index.html",
           filename: "index.html"
         }),
         new webpack.ProgressPlugin(),
+        new CleanWebpackPlugin(),
         new CheckerPlugin()
       ]
     },
