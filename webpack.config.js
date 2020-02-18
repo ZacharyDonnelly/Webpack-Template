@@ -8,7 +8,7 @@ const { CheckerPlugin } = require("awesome-typescript-loader");
 module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
   return webpackMerge(
     {
-      entry: "./src/index.ts",
+      entry: "./src/index.tsx",
       mode,
       module: {
         rules: [
@@ -27,18 +27,31 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
             test: /\.tsx?$/,
             loader: "awesome-typescript-loader",
             exclude: /node_modules/
+          },
+          {
+            test: /\.jsx?$/,
+            exclude: /(node_modules|bower_components)/,
+            loader: "babel-loader",
+            query: {
+              presets: ["@babel/preset-react"]
+            }
           }
         ]
       },
       resolve: {
-        extensions: [".tsx", ".ts", ".js"]
+        extensions: ["*", ".ts", ".tsx", ".js", ".json", ".jsx"]
       },
       output: {
         filename: "./bundle.js",
+        publicPath: "/",
         chunkFilename: "[name].lazy-chunk.js"
       },
       plugins: [
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+          inject: false,
+          template: "./public/index.html",
+          filename: "index.html"
+        }),
         new webpack.ProgressPlugin(),
         new CheckerPlugin()
       ]
