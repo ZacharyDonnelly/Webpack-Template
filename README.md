@@ -2,7 +2,7 @@
 ![webpack](https://img.shields.io/badge/webpack-4.41.6-informational)
 # Webpack-Template
 ## I created this template to save me the trouble of recreating for future projects.
-Template contains Webpack w/ Code-Splitting &amp; lazy-loading.
+Template contains Webpack w/ Code-Splitting, lazy-loading &amp; TypeScript support.
 
 <h2 align="center">Install</h2>
 
