@@ -4,7 +4,13 @@ import * as ReactDOM from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 import App from "./app";
 
-const tester = lazy(() => import("./test"));
+// CODE SPLITTING PACKAGES
+// const getGsap = () => import("gsap")
+// LAZY LOADING
+const tester = lazy(() =>
+  import(/* webpackChunkName: "Test-Route" */ "./test")
+);
+// TRY CODE SPLITTING
 
 ReactDOM.render(
   <BrowserRouter>

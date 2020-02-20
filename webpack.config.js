@@ -6,10 +6,13 @@ const presetConfig = require("./build-utils/loadPresets");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
-  return webpackMerge(
+module.exports = ({ mode, presets } = { mode: "production", presets: [] }) =>
+  webpackMerge(
     {
       entry: "./src/index.tsx",
+      devServer: {
+        historyApiFallback: true
+      },
       mode,
       module: {
         rules: [
@@ -43,8 +46,8 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
         extensions: ["*", ".ts", ".tsx", ".js", ".json", ".jsx"]
       },
       output: {
-        filename: "[name].hash.js",
         publicPath: "/",
+        filename: "[name].hash.js",
         chunkFilename: "[name].lazy-chunk.js"
       },
       plugins: [
@@ -62,4 +65,3 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
     modeConfig(mode),
     presetConfig({ mode, presets })
   );
-};
