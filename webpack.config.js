@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 const webpack = require("webpack");
 const webpackMerge = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
 const presetConfig = require("./build-utils/loadPresets");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
 
 module.exports = ({ mode, presets } = { mode: "production", presets: [] }) =>
   webpackMerge(
@@ -17,15 +18,22 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) =>
       module: {
         rules: [
           {
-            test: /\.(png|jpe?g|gif)$/i,
+            test: /\.(png|jpe?g|gif|ico)$/i,
             use: [
               {
-                loader: "file-loader",
+                loader: "url-loader",
                 options: {
-                  name: "[path][name].[ext]"
+                  name: "[path][name].[ext]",
+                  limit: 8192,
+                  fallback: require.resolve("file-loader"),
+                  quality: 85
                 }
               }
             ]
+          },
+          {
+            test: /\.(woff|woff2)$/,
+            use: ["file-loader"]
           },
           {
             test: /\.tsx?$/,
@@ -50,16 +58,22 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) =>
         filename: "[name].hash.js",
         chunkFilename: "[name].lazy-chunk.js"
       },
+      optimization: {
+        splitChunks: {
+          chunks: "all"
+        }
+      },
       plugins: [
         new HtmlWebpackPlugin({
           inject: true,
-          title: "Fill me out later",
+          title: "Recipe Loader",
           template: "./public/index.html",
           filename: "index.html"
         }),
         new webpack.ProgressPlugin(),
         new CleanWebpackPlugin(),
-        new CheckerPlugin()
+        new CheckerPlugin(),
+        new webpack.WatchIgnorePlugin([/css?\.d\.ts$/])
       ]
     },
     modeConfig(mode),
