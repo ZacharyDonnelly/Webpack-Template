@@ -1,13 +1,13 @@
-const webpackMerge = require("webpack-merge");
-const { CheckerPlugin } = require("awesome-typescript-loader");
+const webpackMerge = require('webpack-merge');
+const { CheckerPlugin } = require('awesome-typescript-loader');
 
-module.exports = env => {
+module.exports = (env) => {
   return webpackMerge(
     // A presets common configuration details
     {
-      target: "node",
+      target: 'node',
       resolve: {
-        extensions: [".ts", ".tsx", ".mjs", ".js", ".json"]
+        extensions: ['.ts', '.tsx', '.mjs', '.js', '.json'],
       },
       module: {
         rules: [
@@ -15,13 +15,13 @@ module.exports = env => {
             test: /\.tsx?$/,
             use: [
               {
-                loader: "awesome-typescript-loader"
-              }
-            ]
-          }
-        ]
+                loader: 'awesome-typescript-loader',
+              },
+            ],
+          },
+        ],
       },
-      plugins: [new CheckerPlugin()]
+      plugins: [new CheckerPlugin()],
     },
     // Any mode specific capabilities for that preset
     { production: {}, development: {} }[env.mode]
